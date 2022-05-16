@@ -9,7 +9,7 @@ val classesCount = providers.gradleProperty("classesCount")
     .orElse(200)
 
 when (kind.get()) {
-    "kotlin" -> {
+    "jvm" -> {
         apply(plugin = "kotlin")
     }
     "android" -> {
@@ -23,6 +23,7 @@ when (kind.get()) {
 
 val generateClasses = tasks.register("generateLibClasses") {
     val outputDir = layout.dir(provider { temporaryDir })
+        .zip(classesCount) { dir, count -> dir.dir(count.toString()) }
 
     inputs.property("baseName", baseName)
     outputs.dir(outputDir)
